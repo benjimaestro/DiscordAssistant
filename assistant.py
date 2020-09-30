@@ -9,6 +9,7 @@ import requests
 import os
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv, find_dotenv
+
 load_dotenv(find_dotenv())
 
 TOKEN = os.getenv("DISCORD_TOKEN")
