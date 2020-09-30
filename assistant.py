@@ -6,9 +6,13 @@ from googlesearch import search
 import aiohttp
 import re
 import requests
+import os
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
 
-TOKEN = #############################################################################
+TOKEN = os.getenv("DISCORD_TOKEN")
+
 bot = commands.Bot(command_prefix="!",help_command=None)
 
 def get_specs_url(device):
