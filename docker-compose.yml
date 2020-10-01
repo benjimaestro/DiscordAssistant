@@ -1,0 +1,13 @@
+version: "3.6"
+
+services:
+  discord-bot:
+    container_name: discord-bot
+    build:
+      context: .
+    volumes:
+      - .env:/app/.env
+    tty: true 
+    stdin_open: true
+    image: benjimaestro/discord-bot
+
