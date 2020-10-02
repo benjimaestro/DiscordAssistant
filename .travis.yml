@@ -4,4 +4,4 @@ services:
   - docker
 
 script:
-- docker build -t discord-bot .
+- bash travis-build.sh
