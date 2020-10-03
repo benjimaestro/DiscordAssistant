@@ -4,14 +4,16 @@ services:
 script:
 - bash travis-build.sh
 before_install:
-- openssl aes-256-cbc -K $encrypted_db2095f63ba3_key -iv $encrypted_db2095f63ba3_iv
-  -in deploy_rsa.enc -out deploy_rsa -d
+- |
+        if [[ "$TRAVIS_PULL_REQUEST" = "false" ]]; then
+                openssl aes-256-cbc -K $encrypted_db2095f63ba3_key -iv $encrypted_db2095f63ba3_iv -in deploy_rsa.enc -out deploy_rsa -d
+        fi
 - eval "$(ssh-agent -s)"
 - chmod 600 deploy_rsa
 - ssh-add deploy_rsa
 deploy:
   provider: script
   skip_cleanup: true
-  script: ssh -o "StrictHostKeyChecking no" -t ubuntu@18.221.133.213 ls
+  script: ssh -o "StrictHostKeyChecking no" -t ubuntu@18.221.133.213 "docker-compose pull && docker-compose restart"
   on:
     branch: master
