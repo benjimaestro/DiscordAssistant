@@ -15,4 +15,3 @@ deploy:
   script: ssh -t ubuntu@18.221.133.213 ls
   on:
     branch: master
-
