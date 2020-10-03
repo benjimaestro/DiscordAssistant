@@ -12,6 +12,6 @@ before_install:
 deploy:
   provider: script
   skip_cleanup: true
-  script: ssh -t ubuntu@18.221.133.213 ls
+  script: ssh -o "StrictHostKeyChecking no" -t ubuntu@18.221.133.213 ls
   on:
     branch: master
