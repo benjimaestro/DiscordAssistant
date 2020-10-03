@@ -106,7 +106,7 @@ async def help(ctx):
     Function called when the !help command is run.
     This will post information about the bot as a discord embed
     """
-    embed = discord.Embed(title=bot.user.name+" help", description="This bot is written and maintained by Zoemaestra#0119", color=0x00ff00)
+    embed = discord.Embed(title=bot.user.name+" Help", description="This bot is written and maintained by Zoemaestra#0119", color=0x00ff00)
     embed.add_field(name="!specs Device Name", value="Fetches the specs for the given device", inline=False)
     embed.add_field(name="!linkme App Title", value="Fetches app info for the given app", inline=False)
     await ctx.send(embed=embed)
