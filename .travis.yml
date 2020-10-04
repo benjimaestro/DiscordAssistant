@@ -14,6 +14,6 @@ before_install:
 deploy:
   provider: script
   skip_cleanup: true
-  script: ssh -o "StrictHostKeyChecking no" -t ubuntu@18.221.133.213 "docker-compose pull && docker-compose restart"
+  script: ssh -o "StrictHostKeyChecking no" -t ubuntu@18.221.133.213 "docker-compose pull && docker-compose down && docker-compose up -d"
   on:
     branch: master
