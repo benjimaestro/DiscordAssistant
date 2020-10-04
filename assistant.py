@@ -137,6 +137,14 @@ async def on_message(message):
     await bot.process_commands(message)#This is necessary to keep the commands working, else the bot will ignore them
 
 @bot.event
+async def on_member_join(member):
+    banned_words = ["autist","autistic","dipshit","faggot","nigger","stock"]
+    username = member.username.lower().split(" ")
+    for word in username:
+        if word in banned_words:
+            print("hhhhhhhhhhhh")
+
+@bot.event
 async def on_ready():
     print('Logged in as:')
     print(bot.user.name)
