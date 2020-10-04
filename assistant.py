@@ -14,6 +14,7 @@ load_dotenv(find_dotenv())
 
 TOKEN = os.getenv("DISCORD_TOKEN")
 
+
 bot = commands.Bot(command_prefix="!",help_command=None)
 
 def get_specs_url(device):
