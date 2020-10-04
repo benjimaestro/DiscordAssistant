@@ -13,9 +13,10 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 
 TOKEN = os.getenv("DISCORD_TOKEN")
+intents = discord.Intents.default()
+intents.members = True
 
-
-bot = commands.Bot(command_prefix="!",help_command=None)
+bot = commands.Bot(command_prefix="!",help_command=None,intents=intents)
 
 def get_specs_url(device):
     """
@@ -138,9 +139,14 @@ async def on_message(message):
 
 @bot.event
 async def on_member_join(member):
-    matches = re.findall(".*(autis|dipshit|dipshit|fag|nigger|overdose|stock).*", member.username.lower())
-    if len(matches) > 0:
-        print("hhhhhhhhhhhh")
+    matches = re.findall(".*(autis|dipshit|dipshit|fag|nigger|overdose|stock).*", member.name.lower())
+    if len(matches) > 0 and member.guild.id == 114407194971209731:
+        embed = discord.Embed(title="Ban", color=0xDD5F53)
+        embed.add_field(name="Offender:", value=str(member), inline=False)
+        embed.add_field(name="Reason:", value="Bad username", inline=False)
+        embed.add_field(name="Responsible moderator:", value=bot.user.name, inline=False)
+        await member.guild.get_channel(349220599152771072).send(embed=embed)
+        await member.ban(reason="Bad username",delete_message_days=7)
 
 @bot.event
 async def on_ready():
