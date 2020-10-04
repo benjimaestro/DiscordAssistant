@@ -138,11 +138,9 @@ async def on_message(message):
 
 @bot.event
 async def on_member_join(member):
-    banned_words = ["autist","autistic","dipshit","faggot","nigger","stock"]
-    username = member.username.lower().split(" ")
-    for word in username:
-        if word in banned_words:
-            print("hhhhhhhhhhhh")
+    matches = re.findall(".*(autis|dipshit|dipshit|fag|nigger|overdose|stock).*", member.username.lower())
+    if len(matches) > 0:
+        print("hhhhhhhhhhhh")
 
 @bot.event
 async def on_ready():
