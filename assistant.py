@@ -123,7 +123,7 @@ async def on_message(message):
     disallowed_sites = ["twitter","ebay"]
     if "http" in text or "www" in text:
         url = re.search("(?P<url>https?://[^\s]+)", text).group("url")
-        if "amp" in text and url.split("//")[1].split(".")[0] not in disallowed_sites:
+        if "amp" in text and url.split("//")[1].split(".")[0] not in disallowed_sites and message.author.id != "597372169269542913":
             try:
                 html_text = requests.get(url).text
                 soup = BeautifulSoup(html_text, 'html.parser')
