@@ -66,7 +66,7 @@ async def specs(ctx,*,device):
     await ctx.trigger_typing()
     url = get_specs_url(device)
     if not url:
-        await ctx.send(f"Couldn't find the specs of the given device. {self.get_emoji('harold')}")
+        await ctx.send(f"Couldn't find the specs of the given device.")
         return
     async with aiohttp.ClientSession() as session:
         stuff = await get_specs(session, url)
@@ -81,8 +81,10 @@ async def specs(ctx,*,device):
             embed.set_footer(text="Source: "+url)
             embed.set_thumbnail(url="https://www.devicespecifications.com/images/model/"+url.split("/")[-1:][0]+"/320/main.jpg")
             await ctx.send(embed=embed)
+            if ctx.message.channel.name != "botspam":
+                await ctx.send("Please use bot commands in the appropriate \#botspam channel unless relevant to the current discussion, abuse of the bot will result in a mute.")
         else:
-            await ctx.send(f"Couldn't find the specs of the given device. {self.get_emoji('harold')}")
+            await ctx.send(f"Couldn't find the specs of the given device.")
 
 @bot.command(pass_context=True)
 async def linkme(ctx,*,appSearch):
