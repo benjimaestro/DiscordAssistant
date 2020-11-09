@@ -41,6 +41,7 @@ class ballot(dict):
             				  "nominee_tag":nominee_tag,
             				  "timestamp":str(time.time())}
             print(new_hash, self[new_hash])
+            #Send user their hash
     
     def backup(self):
     	if os.path.exists(f"{self.name}.pkl"):
@@ -184,6 +185,11 @@ async def on_message(message):
     Function called whenever a message is posted in the server.
     This will try and see if a message is a link, and then check if it's an AMP link, then try to de-AMPify the link, then post the de-AMPified link to the chat.
     """
+    # Anti panda emote garbage
+    if message.author.id == 136636611415900161:
+    	if any(str(emoji) in message.content for emoji in message.guild.emojis):
+    		await message.delete()
+
     text = message.content
     disallowed_sites = ["twitter","ebay"]
     if "http" in text or "www" in text:
