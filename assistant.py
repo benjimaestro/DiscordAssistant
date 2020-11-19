@@ -13,9 +13,11 @@ import datetime
 import time
 import pickle
 import os.path
+import hashlib
 
 load_dotenv(find_dotenv())
 
+registry = []
 
 class ballot(dict):
     def __init__(self,name):
@@ -30,20 +32,18 @@ class ballot(dict):
     		pickle.dump(self, open(f"{self.name}.pkl", "wb" ))
     
     def vote(self,voter_id,voter_tag,nominee_id,nominee_tag):
-        prev_hash = list(x.items())[-1][0]
-        prev_results = list(x.items())[-1][1]
-        for key in prev_results:
-            prev_hash += prev_results[key]
-            new_hash = hashlib.sha256(str.encode(prev_hash)).hexdigest()
-            self[new_hash] = {"voter_id":voter_id,
-            				  "voter_name":voter_tag,
-            				  "nominee_id":nominee_id,
-            				  "nominee_tag":nominee_tag,
-            				  "timestamp":str(time.time())}
-            print(new_hash, self[new_hash])
-            #Send user their hash
+        prev_hash = list(self.items())[-1][0]
+        prev_results = list(self.items())[-1][1]
+        new_hash = hashlib.sha256(str.encode(prev_hash)).hexdigest()
+        self[new_hash] = {"voter_id":voter_id,
+        				  "voter_name":voter_tag,
+        				  "nominee_id":nominee_id,
+        				  "nominee_tag":nominee_tag,
+        				  "timestamp":str(time.time())}
+        print(new_hash, self[new_hash])
     
     def backup(self):
+    	print(self)
     	if os.path.exists(f"{self.name}.pkl"):
     		os.rename(f"{self.name}.pkl", f"{self.name} {datetime.datetime.now().strftime('%d-%m-%Y %H-%M-%S')}.pkl")
     		pickle.dump(self, open(f"{self.name}.pkl", "wb" ))
@@ -51,7 +51,6 @@ class ballot(dict):
             pickle.dump(self, open(f"{self.name}.pkl", "wb" ))
 
 vote_helpful = ballot("helpful")
-vote_theme = ballot("theme")
 vote_funny = ballot("funny")
 vote_improved = ballot("improved")
 vote_best = ballot("best")
@@ -103,19 +102,64 @@ async def get_specs(session, url):
 
 @bot.command(pass_context=True)
 async def vote(ctx):
+    registry.append(ctx.message.author.id)
     user = bot.get_user(ctx.message.author.id)
     await ctx.send("<@!"+str(ctx.message.author.id)+"> you have been DM'd voting instructions. Make sure you are able to receive DMs from server members.")
     if ctx.message.author.joined_at.timestamp() < 1606780800:
     	await user.send("""Thank you for participating in the Droider Of The Year awards.
-Please enter the username AND tag for the person you would like to nominate.
-Eg, Username#0001""")
+The following categories to vote for are:
+Funniest droider
+Most helpful droider
+Most improved droider
+Droider of the year
+
+Nominees are submitted by ID - you must have discord developer mode enabled to copy IDs.
+A discord ID is a string of numbers, look up how to get user IDs on the internet.
+
+To vote for the funniest droider, run the command in this DM:
+`!funniest 349220599152771072`
+
+To vote for the most helpful droider, run the command in this DM:
+`!helpful 349220599152771072`
+
+To vote for the most improved droider, run the command in this DM:
+`!improved 349220599152771072`
+
+To vote for the droider of the year, run the command in this DM:
+`!doty 349220599152771072`
+
+Replace `349220599152771072` with your the ID of your nominee of choice.
+""")
     else:
     	await user.send("Sorry but your account did not join early enough to participate.")
+
+@commands.dm_only()
+@bot.command(pass_context=True)
+async def doty(ctx, arg):
+	user = bot.get_user(int(arg))
+	await ctx.send(f"You are nominating {user} for the Droider of the Year category. Enter Y to confirm, or anything else to cancel.")
+	msg = await bot.wait_for('message')
+	if msg.content.lower() == 'y' and msg.author.id in registry and user != None:
+		vote = True
+		for key in vote_best:
+			if vote_best[key]["voter_id"] == msg.author.id:
+				await ctx.send("Vote not recorded. You have already voted in this catergory!")
+				vote = False
+				break
+		if vote:
+			vote_best.vote(msg.author.id,msg.author.name+"#"+msg.author.discriminator,int(arg),user.name+"#"+user.discriminator)
+			await ctx.send(f"You have voted for {user} for the Droider of the Year category. Make sure you vote in the other categories too!")
+	else:
+		await ctx.send("Vote was not recorded. Either it was cancelled, you weren't registered to vote or the ID was invalid. Register by running `!vote` in #botspam.")
+
+@bot.command(pass_context=True)
+async def debug(ctx):
+	for key in vote_best:
+	    print(vote_best[key]["voter_id"])
 
 @bot.command(pass_context=True)
 async def backupvotes(ctx):
 	vote_helpful.backup()
-	vote_theme.backup()
 	vote_funny.backup()
 	vote_improved.backup()
 	vote_best.backup()
