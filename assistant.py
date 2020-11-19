@@ -171,29 +171,28 @@ async def specs(ctx,*,device):
     Function called when the !specs command is run.
     This will try and find the specs of the requested device and post the findings as an embed to the chat wherever the command was called from
     """
-    await ctx.send("Due to issues with the website providing data for this bot, this command has been disabled until it works again.")
-    #await ctx.trigger_typing()
-    #url = get_specs_url(device)
-    #if not url:
-    #    await ctx.send("Couldn't find the specs of the given device.")
-    #    return
-    #async with aiohttp.ClientSession() as session:
-    #    stuff = await get_specs(session, url)
-    #    if stuff:
-    #        model, specs, unconfirmed = stuff
-    #        embed = discord.Embed(
-    #            color=discord.Colour.orange(), description="\n".join(x.strip() for x in specs.replace("<b>", "**").replace("</b>", "**").split("<br />")))
-    #        if unconfirmed:
-    #            embed.set_author(name=f"{model} (UNCONFIRMED)")
-    #        else:
-    #            embed.set_author(name=model)
-    #        embed.set_footer(text="Source: "+url)
-    #        embed.set_thumbnail(url="https://www.devicespecifications.com/images/model/"+url.split("/")[-1:][0]+"/320/main.jpg")
-    #        await ctx.send(embed=embed)
-    #        if ctx.message.channel.name != "botspam":
-    #            await ctx.send("Please use bot commands in the appropriate \#botspam channel unless relevant to the current discussion, abuse of the bot will result in a mute.")
-    #    else:
-    #        await ctx.send("Couldn't find the specs of the given device.")
+    await ctx.trigger_typing()
+    url = get_specs_url(device)
+    if not url:
+        await ctx.send("Couldn't find the specs of the given device.")
+        return
+    async with aiohttp.ClientSession() as session:
+        stuff = await get_specs(session, url)
+        if stuff:
+            model, specs, unconfirmed = stuff
+            embed = discord.Embed(
+                color=discord.Colour.orange(), description="\n".join(x.strip() for x in specs.replace("<b>", "**").replace("</b>", "**").split("<br />")))
+            if unconfirmed:
+                embed.set_author(name=f"{model} (UNCONFIRMED)")
+            else:
+                embed.set_author(name=model)
+            embed.set_footer(text="Source: "+url)
+            embed.set_thumbnail(url="https://www.devicespecifications.com/images/model/"+url.split("/")[-1:][0]+"/320/main.jpg")
+            await ctx.send(embed=embed)
+            if ctx.message.channel.name != "botspam":
+                await ctx.send("Please use bot commands in the appropriate \#botspam channel unless relevant to the current discussion, abuse of the bot will result in a mute.")
+        else:
+            await ctx.send("Couldn't find the specs of the given device.")
 
 @bot.command(pass_context=True)
 async def linkme(ctx,*,appSearch):
