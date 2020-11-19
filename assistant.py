@@ -68,6 +68,7 @@ def get_specs_url(device):
     try:
         for res in search(f"{device} specifications site:devicespecifications.com", num=3, stop=1, pause=3.5):
             if "/model/" in res:
+                print(res)
                 return res.split('?')[0]
     except:
         pass
