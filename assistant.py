@@ -230,9 +230,9 @@ async def on_message(message):
     This will try and see if a message is a link, and then check if it's an AMP link, then try to de-AMPify the link, then post the de-AMPified link to the chat.
     """
     # Anti panda emote garbage
-    if message.author.id == 136636611415900161:
-    	if any(str(emoji) in message.content for emoji in message.guild.emojis):
-    		await message.delete()
+    #if message.author.id == 136636611415900161:
+    #	if any(str(emoji) in message.content for emoji in message.guild.emojis):
+    #		await message.delete()
 
     text = message.content
     disallowed_sites = ["twitter","ebay"]
