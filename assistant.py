@@ -233,6 +233,18 @@ async def on_message(message):
     #if message.author.id == 136636611415900161:
     #	if any(str(emoji) in message.content for emoji in message.guild.emojis):
     #		await message.delete()
+    try:
+	    if time.time() - 86400 < int(message.author.joined_at.strftime('%s')):
+	    	matches = re.findall(".*(dipshit|pome|overdose).*", message.content.lower())
+	    	if len(matches) > 0 and message.author.guild.id == 114407194971209731:
+	    		embed = discord.Embed(title="Ban", color=0xDD5F53)
+	    		embed.add_field(name="Offender:", value=str(message.author), inline=False)
+	    		embed.add_field(name="Reason:", value="Angry pome guy", inline=False)
+	    		embed.add_field(name="Responsible moderator:", value=bot.user.name, inline=False)
+	    		await message.author.guild.get_channel(349220599152771072).send(embed=embed)
+	    		await message.author.ban(reason="Angry pome guy",delete_message_days=7)
+    except AttributeError: #Not happy when bots post messages
+    	pass
 
     text = message.content
     disallowed_sites = ["twitter","ebay"]
