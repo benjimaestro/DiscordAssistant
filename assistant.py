@@ -114,7 +114,14 @@ Most improved droider
 Droider of the year
 
 Nominees are submitted by ID - you must have discord developer mode enabled to copy IDs.
-A discord ID is a string of numbers, look up how to get user IDs on the internet.
+
+Developer mode on desktop: settings > appearance, scroll to advanced > developer mode
+Right click user profile pic, copy ID
+
+Developer mode on mobile: settings > behaviour > developer mode
+Tap profile picture, scroll to bottom, copy ID
+
+
 
 To vote for the funniest droider, run the command in this DM:
 `!funniest 349220599152771072`
