@@ -221,7 +221,10 @@ async def improved(ctx, arg):
 
 @bot.command(pass_context=True)
 async def debugvote(ctx):
-	vote_best
+	print("DOTY", vote_best)
+	print("funniest", vote_funny)
+	print("helpful", vote_helpful)
+	print("improved", vote_improved)
 
 @bot.command(pass_context=True)
 async def backupvotes(ctx):
