@@ -102,10 +102,10 @@ async def get_specs(session, url):
 
 @bot.command(pass_context=True)
 async def vote(ctx):
-    registry.append(ctx.message.author.id)
     user = bot.get_user(ctx.message.author.id)
     await ctx.send("<@!"+str(ctx.message.author.id)+"> you have been DM'd voting instructions. Make sure you are able to receive DMs from server members.")
     if ctx.message.author.joined_at.timestamp() < 1606780800:
+    	registry.append(ctx.message.author.id)
     	await user.send("""Thank you for participating in the Droider Of The Year awards.
 The following categories to vote for are:
 Funniest droider
@@ -159,10 +159,67 @@ async def doty(ctx, arg):
 	else:
 		await ctx.send("Vote was not recorded. Either it was cancelled, you weren't registered to vote or the ID was invalid. Register by running `!vote` in #botspam.")
 
+@commands.dm_only()
 @bot.command(pass_context=True)
-async def debug(ctx):
-	for key in vote_best:
-	    print(vote_best[key]["voter_id"])
+async def funniest(ctx, arg):
+	user = bot.get_user(int(arg))
+	await ctx.send(f"You are nominating {user} for the Funniest Droider category. Enter Y to confirm, or anything else to cancel.")
+	msg = await bot.wait_for('message')
+	if msg.content.lower() == 'y' and msg.author.id in registry and user != None:
+		vote = True
+		for key in vote_funny:
+			if vote_funny[key]["voter_id"] == msg.author.id:
+				await ctx.send("Vote not recorded. You have already voted in this catergory!")
+				vote = False
+				break
+		if vote:
+			vote_funny.vote(msg.author.id,msg.author.name+"#"+msg.author.discriminator,int(arg),user.name+"#"+user.discriminator)
+			await ctx.send(f"You have voted for {user} for the Funniest Droider category. Make sure you vote in the other categories too!")
+	else:
+		await ctx.send("Vote was not recorded. Either it was cancelled, you weren't registered to vote or the ID was invalid. Register by running `!vote` in #botspam.")
+
+@commands.dm_only()
+@bot.command(pass_context=True)
+async def helpful(ctx, arg):
+	user = bot.get_user(int(arg))
+	await ctx.send(f"You are nominating {user} for the Most Helpful Droider category. Enter Y to confirm, or anything else to cancel.")
+	msg = await bot.wait_for('message')
+	if msg.content.lower() == 'y' and msg.author.id in registry and user != None:
+		vote = True
+		for key in vote_helpful:
+			if vote_helpful[key]["voter_id"] == msg.author.id:
+				await ctx.send("Vote not recorded. You have already voted in this catergory!")
+				vote = False
+				break
+		if vote:
+			vote_helpful.vote(msg.author.id,msg.author.name+"#"+msg.author.discriminator,int(arg),user.name+"#"+user.discriminator)
+			await ctx.send(f"You have voted for {user} for the Most Helpful Droider category. Make sure you vote in the other categories too!")
+	else:
+		await ctx.send("Vote was not recorded. Either it was cancelled, you weren't registered to vote or the ID was invalid. Register by running `!vote` in #botspam.")
+
+@commands.dm_only()
+@bot.command(pass_context=True)
+async def improved(ctx, arg):
+	user = bot.get_user(int(arg))
+	await ctx.send(f"You are nominating {user} for the Most Improved Droider category. Enter Y to confirm, or anything else to cancel.")
+	msg = await bot.wait_for('message')
+	if msg.content.lower() == 'y' and msg.author.id in registry and user != None:
+		vote = True
+		for key in vote_improved:
+			if vote_improved[key]["voter_id"] == msg.author.id:
+				await ctx.send("Vote not recorded. You have already voted in this catergory!")
+				vote = False
+				break
+		if vote:
+			vote_improved.vote(msg.author.id,msg.author.name+"#"+msg.author.discriminator,int(arg),user.name+"#"+user.discriminator)
+			await ctx.send(f"You have voted for {user} for the Most Improved Droider category. Make sure you vote in the other categories too!")
+	else:
+		await ctx.send("Vote was not recorded. Either it was cancelled, you weren't registered to vote or the ID was invalid. Register by running `!vote` in #botspam.")
+
+
+@bot.command(pass_context=True)
+async def debugvote(ctx):
+	vote_best
 
 @bot.command(pass_context=True)
 async def backupvotes(ctx):
