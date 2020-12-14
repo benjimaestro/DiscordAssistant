@@ -113,6 +113,8 @@ Most helpful droider
 Most improved droider
 Droider of the year
 
+Please read ALL of this before voting.
+
 Nominees are submitted by ID - you must have discord developer mode enabled to copy IDs.
 
 Developer mode on desktop: settings > appearance, scroll to advanced > developer mode
@@ -135,7 +137,7 @@ To vote for the most improved droider, run the command in this DM:
 To vote for the droider of the year, run the command in this DM:
 `!doty 349220599152771072`
 
-Replace `349220599152771072` with your the ID of your nominee of choice.
+Replace ID `349220599152771072` with your the ID of your nominee of choice.
 """)
     else:
     	await user.send("Sorry but your account did not join early enough to participate.")
