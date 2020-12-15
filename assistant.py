@@ -147,7 +147,7 @@ Replace ID `349220599152771072` with your the ID of your nominee of choice.
 async def doty(ctx, arg):
 	user = bot.get_user(int(arg))
 	await ctx.send(f"You are nominating {user} for the Droider of the Year category. Enter Y to confirm, or anything else to cancel.")
-	msg = await bot.wait_for('message')
+	msg = await bot.wait_for('message', check=lambda message: message.author == ctx.author)
 	if msg.content.lower() == 'y' and msg.author.id in registry and user != None:
 		vote = True
 		for key in vote_best:
@@ -166,7 +166,7 @@ async def doty(ctx, arg):
 async def funniest(ctx, arg):
 	user = bot.get_user(int(arg))
 	await ctx.send(f"You are nominating {user} for the Funniest Droider category. Enter Y to confirm, or anything else to cancel.")
-	msg = await bot.wait_for('message')
+	msg = await bot.wait_for('message', check=lambda message: message.author == ctx.author)
 	if msg.content.lower() == 'y' and msg.author.id in registry and user != None:
 		vote = True
 		for key in vote_funny:
@@ -185,7 +185,7 @@ async def funniest(ctx, arg):
 async def helpful(ctx, arg):
 	user = bot.get_user(int(arg))
 	await ctx.send(f"You are nominating {user} for the Most Helpful Droider category. Enter Y to confirm, or anything else to cancel.")
-	msg = await bot.wait_for('message')
+	msg = await bot.wait_for('message', check=lambda message: message.author == ctx.author)
 	if msg.content.lower() == 'y' and msg.author.id in registry and user != None:
 		vote = True
 		for key in vote_helpful:
@@ -204,7 +204,7 @@ async def helpful(ctx, arg):
 async def improved(ctx, arg):
 	user = bot.get_user(int(arg))
 	await ctx.send(f"You are nominating {user} for the Most Improved Droider category. Enter Y to confirm, or anything else to cancel.")
-	msg = await bot.wait_for('message')
+	msg = await bot.wait_for('message', check=lambda message: message.author == ctx.author)
 	if msg.content.lower() == 'y' and msg.author.id in registry and user != None:
 		vote = True
 		for key in vote_improved:
