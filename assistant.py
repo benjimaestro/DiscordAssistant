@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.utils import get
 import asyncio
 import play_scraper
 from googlesearch import search
@@ -20,7 +21,7 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 intents = discord.Intents.default()
 intents.members = True
 
-bot = commands.Bot(command_prefix="!",help_command=None,intents=intents)
+bot = commands.Bot(command_prefix=["!"],help_command=None,intents=intents)
 
 def get_specs_url(device):
     """
@@ -90,6 +91,20 @@ async def specs(ctx,*,device):
         else:
             await ctx.send("Couldn't find the specs of the given device.")
 
+@bot.event
+async def on_member_update(before, after):
+	"""
+    Function called when a member is updated.
+    This is used to automatically remove the regular role from muted users
+    """
+	#Checks if role was added
+    if len(before.roles) < len(after.roles):
+    	#Gets the new role
+        newRole = next(role for role in after.roles if role not in before.roles)
+        if newRole.name == "Muted":
+        	role = get(after.guild.roles, name='Regular')
+        	await after.remove_roles(role)
+
 @bot.command(pass_context=True)
 async def linkme(ctx,*,appSearch):
     """
@@ -125,10 +140,6 @@ async def on_message(message):
     Function called whenever a message is posted in the server.
     This will try and see if a message is a link, and then check if it's an AMP link, then try to de-AMPify the link, then post the de-AMPified link to the chat.
     """
-    # Anti panda emote garbage
-    #if message.author.id == 136636611415900161:
-    #	if any(str(emoji) in message.content for emoji in message.guild.emojis):
-    #		await message.delete()
     try:
 	    if time.time() - 86400 < int(message.author.joined_at.strftime('%s')):
 	    	matches = re.findall(".*(dipshit|pome|overdose).*", message.content.lower())
@@ -162,7 +173,7 @@ async def on_message(message):
 
 @bot.event
 async def on_member_join(member):
-    matches = re.findall(".*(autis|dipshit|dipshit|fag|nigger|overdose|stock|UTTP|THDTC).*", member.name.lower())
+    matches = re.findall(".*(autis|dipshit|dipshit|fag|nigger|overdose|UTTP|THDTC).*", member.name.lower())
     if len(matches) > 0 and member.guild.id == 114407194971209731:
         embed = discord.Embed(title="Ban", color=0xDD5F53)
         embed.add_field(name="Offender:", value=str(member), inline=False)
