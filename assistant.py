@@ -95,7 +95,7 @@ async def specs(ctx,*,device):
 async def on_member_update(before, after):
 	"""
     Function called when a member is updated.
-    This is used to automatically remove the regular role from muted users
+    This is used to automatically remove the regular role from muted users.
     """
 	#Checks if role was added
     if len(before.roles) < len(after.roles):
