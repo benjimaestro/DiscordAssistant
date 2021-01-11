@@ -93,11 +93,11 @@ async def specs(ctx,*,device):
 
 @bot.event
 async def on_member_update(before, after):
-	"""
+    """
     Function called when a member is updated.
     This is used to automatically remove the regular role from muted users.
     """
-	#Checks if role was added
+    #Checks if role was added
     if len(before.roles) < len(after.roles):
     	#Gets the new role
         newRole = next(role for role in after.roles if role not in before.roles)
