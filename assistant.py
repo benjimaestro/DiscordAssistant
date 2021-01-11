@@ -148,7 +148,7 @@ async def on_message(message):
 	    		embed.add_field(name="Offender:", value=str(message.author), inline=False)
 	    		embed.add_field(name="Reason:", value="Angry pome guy", inline=False)
 	    		embed.add_field(name="Responsible moderator:", value=bot.user.name, inline=False)
-	    		embed.set_footer(text=f"ID: {str(member.id)} - Today at {time.strftime("%H:%M")}")
+	    		embed.set_footer(text=f"ID: {str(member.id)} - Today at {time.strftime('%H:%M')}")
 	    		await message.author.guild.get_channel(349220599152771072).send(embed=embed)
 	    		await message.author.ban(reason="Angry pome guy",delete_message_days=7)
     except AttributeError: #Not happy when bots post messages
@@ -180,7 +180,7 @@ async def on_member_join(member):
         embed.add_field(name="Offender:", value=str(member), inline=False)
         embed.add_field(name="Reason:", value="Bad username", inline=False)
         embed.add_field(name="Responsible moderator:", value=bot.user.name, inline=False)
-        embed.set_footer(text=f"ID: {str(member.id)} - Today at {time.strftime("%H:%M")}")
+        embed.set_footer(text=f"ID: {str(member.id)} - Today at {time.strftime('%H:%M')}")
         await member.guild.get_channel(349220599152771072).send(embed=embed)
         await member.ban(reason="Known troll alt",delete_message_days=7)
 
@@ -194,7 +194,7 @@ async def tsban(ctx, member: discord.Member):
     embed.add_field(name="Offender:", value=f"{member.name}#{member.discriminator}", inline=False)
     embed.add_field(name="Reason:", value="Support channel ban", inline=False)
     embed.add_field(name="Responsible moderator:", value=f"{ctx.message.author.name}#{ctx.message.author.discriminator}", inline=False)
-    embed.set_footer(text=f"ID: {str(member.id)} - Today at {time.strftime("%H:%M")}")
+    embed.set_footer(text=f"ID: {str(member.id)} - Today at {time.strftime('%H:%M')}")
     await member.guild.get_channel(349220599152771072).send(embed=embed)
 
 @bot.command(pass_context=True)
@@ -206,7 +206,7 @@ async def tsunban(ctx, member: discord.Member):
     embed = discord.Embed(title="Support Channel Unban", color=0x42F4A7)
     embed.add_field(name="User:", value=f"{member.name}#{member.discriminator}", inline=False)
     embed.add_field(name="Responsible moderator:", value=f"{ctx.message.author.name}#{ctx.message.author.discriminator}", inline=False)
-    embed.set_footer(text=f"ID: {str(member.id)} - Today at {time.strftime("%H:%M")}")
+    embed.set_footer(text=f"ID: {str(member.id)} - Today at {time.strftime('%H:%M')}")
     await member.guild.get_channel(349220599152771072).send(embed=embed)
 
 @bot.event
