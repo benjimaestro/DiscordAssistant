@@ -182,6 +182,29 @@ async def on_member_join(member):
         await member.guild.get_channel(349220599152771072).send(embed=embed)
         await member.ban(reason="Known troll alt",delete_message_days=7)
 
+@bot.command(pass_context=True)
+@commands.has_any_role("Giant Nerd","Mod","Admin")
+async def tsban(ctx, member: discord.Member):
+    role = get(member.guild.roles, name='ts-muted')
+    await member.add_roles(role)
+    await ctx.send(f"{member.name}#{member.discriminator} has been banned from support channels")
+    embed = discord.Embed(title="Support Channel Ban", color=0xF48942)
+    embed.add_field(name="Offender:", value=f"{member.name}#{member.discriminator}", inline=False)
+    embed.add_field(name="Reason:", value="Support channel ban", inline=False)
+    embed.add_field(name="Responsible moderator:", value=f"{ctx.message.author.name}#{ctx.message.author.discriminator}", inline=False)
+    await member.guild.get_channel(349220599152771072).send(embed=embed)
+
+@bot.command(pass_context=True)
+@commands.has_any_role("Giant Nerd","Mod","Admin")
+async def tsunban(ctx, member: discord.Member):
+    role = get(member.guild.roles, name='ts-muted')
+    await member.remove_roles(role)
+    await ctx.send(f"{member.name}#{member.discriminator} has now been unbanned from support channels")
+    embed = discord.Embed(title="Support Channel Unban", color=0x42F4A7)
+    embed.add_field(name="User:", value=f"{member.name}#{member.discriminator}", inline=False)
+    embed.add_field(name="Responsible moderator:", value=f"{ctx.message.author.name}#{ctx.message.author.discriminator}", inline=False)
+    await member.guild.get_channel(349220599152771072).send(embed=embed)
+
 @bot.event
 async def on_ready():
     print('Logged in as:')
