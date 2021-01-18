@@ -174,7 +174,7 @@ async def on_message(message):
 
 @bot.event
 async def on_member_join(member):
-    matches = re.findall(".*(autis|dipshit|dipshit|fag|nigger|overdose|UTTP|THDTC).*", member.name.lower())
+    matches = re.findall(".*(autis|dipshit|dipshit|fag|nigger|overdose|Zythas|UTTP|THDTC).*", member.name.lower())
     if len(matches) > 0 and member.guild.id == 114407194971209731:
         embed = discord.Embed(title="Ban", color=0xDD5F53)
         embed.add_field(name="Offender:", value=str(member), inline=False)
