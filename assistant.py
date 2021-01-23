@@ -174,6 +174,16 @@ async def on_message(message):
 
 @bot.event
 async def on_member_join(member):
+    if len(member.name) == 10:
+    	if member.created_at < datetime.datetime(2021, 1, 24, 0, 0, 0) and member.created_at > datetime.datetime(2021, 1, 22, 23, 59, 59):
+            embed = discord.Embed(title="Ban", color=0xDD5F53)
+            embed.add_field(name="Offender:", value=str(member), inline=False)
+            embed.add_field(name="Reason:", value="Bot account", inline=False)
+            embed.add_field(name="Responsible moderator:", value=bot.user.name, inline=False)
+            embed.set_footer(text=f"ID: {str(member.id)} - Today at {time.strftime('%H:%M')}")
+            await member.guild.get_channel(349220599152771072).send(embed=embed)
+            await member.ban(reason="Bot account",delete_message_days=7)
+
     matches = re.findall(".*(autis|dipshit|dipshit|fag|nigger|overdose|Zythas|UTTP|THDTC).*", member.name.lower())
     if len(matches) > 0 and member.guild.id == 114407194971209731:
         embed = discord.Embed(title="Ban", color=0xDD5F53)
