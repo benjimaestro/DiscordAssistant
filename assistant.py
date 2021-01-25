@@ -27,6 +27,19 @@ def normalize_text(s):
     nfkd_form = unicodedata.normalize('NFKD', s)
     return u"".join([c for c in nfkd_form if not unicodedata.combining(c)])
 
+def embedbuilder(title,colour,
+                 userTitle,userValue,
+                 reasonTitle,reasonValue,
+                 responsibleTitle, responsibleValue,
+                 footer):
+
+    embed = discord.Embed(title=title, color=colour)
+    embed.add_field(name=userTitle, value=str(userValue), inline=False)
+    embed.add_field(name=reasonTitle, value=reasonValue, inline=False)
+    embed.add_field(name=responsibleTitle, value=responsibleValue, inline=False)
+    embed.set_footer(text=footer)
+    return embed
+
 def get_specs_url(device):
     """
     Function to get the devicespecifications URL for the requested model using Google
@@ -103,11 +116,11 @@ async def on_member_update(before, after):
     """
     #Checks if role was added
     if len(before.roles) < len(after.roles):
-    	#Gets the new role
+        #Gets the new role
         newRole = next(role for role in after.roles if role not in before.roles)
         if newRole.name == "Muted":
-        	role = get(after.guild.roles, name='Regular')
-        	await after.remove_roles(role)
+            role = get(after.guild.roles, name='Regular')
+            await after.remove_roles(role)
 
 @bot.command(pass_context=True)
 async def linkme(ctx,*,appSearch):
@@ -145,18 +158,18 @@ async def on_message(message):
     This will try and see if a message is a link, and then check if it's an AMP link, then try to de-AMPify the link, then post the de-AMPified link to the chat.
     """
     try:
-	    if time.time() - 86400 < int(message.author.joined_at.strftime('%s')):
-	    	matches = re.findall(".*(dipshit|pome|overdose).*", message.content.lower())
-	    	if len(matches) > 0 and message.author.guild.id == 114407194971209731:
-	    		embed = discord.Embed(title="Ban", color=0xDD5F53)
-	    		embed.add_field(name="Offender:", value=str(message.author), inline=False)
-	    		embed.add_field(name="Reason:", value="Angry pome guy", inline=False)
-	    		embed.add_field(name="Responsible moderator:", value=bot.user.name, inline=False)
-	    		embed.set_footer(text=f"ID: {str(member.id)} - Today at {time.strftime('%H:%M')}")
-	    		await message.author.guild.get_channel(349220599152771072).send(embed=embed)
-	    		await message.author.ban(reason="Angry pome guy",delete_message_days=7)
+        if time.time() - 86400 < int(message.author.joined_at.strftime('%s')):
+            matches = re.findall(".*(dipshit|pome|overdose).*", message.content.lower())
+            if len(matches) > 0 and message.author.guild.id == 114407194971209731:
+                embed = embedbuilder("Ban", 0xDD5F53,
+                                     "Offender: ", str(message.author),
+                                     "Reason: ", "Angry lineageOS guy",
+                                     "Responsible moderator: ", str(bot.user.name),
+                                     f"ID: {str(member.id)} - Today at {time.strftime('%H:%M')}")
+                await message.author.guild.get_channel(349220599152771072).send(embed=embed)
+                await message.author.ban(reason="Angry pome guy",delete_message_days=7)
     except AttributeError: #Not happy when bots post messages
-    	pass
+        pass
 
     text = message.content
     disallowed_sites = ["twitter","ebay"]
@@ -178,29 +191,30 @@ async def on_message(message):
 
 @bot.event
 async def on_member_join(member):
-	#Converts usernames if they have accents for easier filtering
-	try:
-    	membername = normalize_text(member.name.lower())
+    #Converts usernames if they have accents for easier filtering
+    try:
+        membername = normalize_text(member.name.lower())
     except:
-    	membername = member.name.lower()
+        membername = member.name.lower()
     #Identifies and bans known spam accounts
     if len(member.name) == 10:
-    	if member.created_at < datetime.datetime(2021, 1, 24, 0, 0, 0) and member.created_at > datetime.datetime(2021, 1, 22, 23, 59, 59):
-            embed = discord.Embed(title="Ban", color=0xDD5F53)
-            embed.add_field(name="Offender:", value=str(member), inline=False)
-            embed.add_field(name="Reason:", value="Bot account", inline=False)
-            embed.add_field(name="Responsible moderator:", value=bot.user.name, inline=False)
-            embed.set_footer(text=f"ID: {str(member.id)} - Today at {time.strftime('%H:%M')}")
+        if member.created_at < datetime.datetime(2021, 1, 24, 0, 0, 0) and member.created_at > datetime.datetime(2021, 1, 22, 23, 59, 59):
+            embed = embedbuilder("Ban", 0xDD5F53,
+                                 "Offender: ", f"{member.name}#{member.discriminator}",
+                                 "Reason: ", "Bot account",
+                                 "Responsible moderator: ", f"{bot.user.name}#{bot.user.discriminator}",
+                                 f"ID: {str(member.id)} - Today at {time.strftime('%H:%M')}")
             await member.guild.get_channel(349220599152771072).send(embed=embed)
             await member.ban(reason="Bot account",delete_message_days=7)
     #Bans people with certain usernames once joined
     matches = re.findall(".*(autis|dipshit|dipshit|fag|nigger|overdose|Zythas|UTTP|THDTC).*", membername)
     if len(matches) > 0 and member.guild.id == 114407194971209731:
-        embed = discord.Embed(title="Ban", color=0xDD5F53)
-        embed.add_field(name="Offender:", value=str(member), inline=False)
-        embed.add_field(name="Reason:", value="Bad username", inline=False)
-        embed.add_field(name="Responsible moderator:", value=bot.user.name, inline=False)
-        embed.set_footer(text=f"ID: {str(member.id)} - Today at {time.strftime('%H:%M')}")
+
+        embed = embedbuilder("Ban", 0xDD5F53,
+                             "Offender: ", f"{member.name}#{member.discriminator}",
+                             "Reason: ", "Bad username",
+                             "Responsible moderator: ", f"{bot.user.name}#{bot.user.discriminator}",
+                             f"ID: {str(member.id)} - Today at {time.strftime('%H:%M')}")
         await member.guild.get_channel(349220599152771072).send(embed=embed)
         await member.ban(reason="Known troll alt",delete_message_days=7)
 
@@ -210,11 +224,12 @@ async def tsban(ctx, member: discord.Member):
     role = get(member.guild.roles, name='ts-muted')
     await member.add_roles(role)
     await ctx.send(f"**{member.name}#{member.discriminator}** has been banned from support channels")
-    embed = discord.Embed(title="Support Channel Ban", color=0xF48942)
-    embed.add_field(name="Offender:", value=f"{member.name}#{member.discriminator}", inline=False)
-    embed.add_field(name="Reason:", value="Support channel ban", inline=False)
-    embed.add_field(name="Responsible moderator:", value=f"{ctx.message.author.name}#{ctx.message.author.discriminator}", inline=False)
-    embed.set_footer(text=f"ID: {str(member.id)} - Today at {time.strftime('%H:%M')}")
+
+    embed = embedbuilder("Support Channel Ban", 0xF48942,
+                         "Offender: ", f"{member.name}#{member.discriminator}",
+                         "Reason: ", "Support channel ban",
+                         "Responsible moderator: ", f"{ctx.message.author.name}#{ctx.message.author.discriminator}",
+                         f"ID: {str(member.id)} - Today at {time.strftime('%H:%M')}")
     await member.guild.get_channel(349220599152771072).send(embed=embed)
 
 @bot.command(pass_context=True)
@@ -223,10 +238,11 @@ async def tsunban(ctx, member: discord.Member):
     role = get(member.guild.roles, name='ts-muted')
     await member.remove_roles(role)
     await ctx.send(f"**{member.name}#{member.discriminator}** has now been unbanned from support channels")
-    embed = discord.Embed(title="Support Channel Unban", color=0x42F4A7)
-    embed.add_field(name="User:", value=f"{member.name}#{member.discriminator}", inline=False)
-    embed.add_field(name="Responsible moderator:", value=f"{ctx.message.author.name}#{ctx.message.author.discriminator}", inline=False)
-    embed.set_footer(text=f"ID: {str(member.id)} - Today at {time.strftime('%H:%M')}")
+    embed = embedbuilder("Support Channel Unban", 0x42F4A7,
+                         "Offender: ", f"{member.name}#{member.discriminator}",
+                         "Reason: ", "Support channel ban",
+                         "Responsible moderator: ", f"{ctx.message.author.name}#{ctx.message.author.discriminator}",
+                         f"ID: {str(member.id)} - Today at {time.strftime('%H:%M')}")
     await member.guild.get_channel(349220599152771072).send(embed=embed)
 
 @bot.event
