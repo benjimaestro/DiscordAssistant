@@ -102,7 +102,8 @@ async def specs(ctx,*,device):
                 embed.set_author(name=model)
             embed.set_footer(text="Source: "+url)
             embed.set_thumbnail(url="https://www.devicespecifications.com/images/model/"+url.split("/")[-1:][0]+"/320/main.jpg")
-            await ctx.send(embed=embed)
+            #await ctx.send(embed=embed)
+            await ctx.send("Oops! We got banned from devicespecifications again and zoe is too busy (lazy) to fix it for the time being!")
             if ctx.message.channel.name != "botspam":
                 await ctx.send("Please use bot commands in the appropriate \#botspam channel unless relevant to the current discussion, abuse of the bot will result in a mute.")
         else:
