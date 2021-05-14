@@ -208,7 +208,7 @@ async def on_member_join(member):
             await member.guild.get_channel(349220599152771072).send(embed=embed)
             await member.ban(reason="Bot account",delete_message_days=7)
     #Bans people with certain usernames once joined
-    matches = re.findall(".*(autis|dipshit|dipshit|fag|nigger|overdose|Zythas|UTTP|THDTC|cryptopoop|﷽﷽|꧅).*", membername)
+    matches = re.findall(".*(autis|fag|nigger|overdose|Zythas|UTTP|THDTC).*", membername)
     if len(matches) > 0 and member.guild.id == 114407194971209731:
 
         embed = embedbuilder("Ban", 0xDD5F53,
